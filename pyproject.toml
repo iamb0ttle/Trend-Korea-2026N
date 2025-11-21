@@ -1,0 +1,15 @@
+[project]
+name = "trend-korea-2026n"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "konlpy>=0.6.0",
+    "matplotlib>=3.10.7",
+    "pandas>=2.3.3",
+    "python-dotenv>=1.2.1",
+    "selenium>=4.38.0",
+    "webdriver-manager>=4.0.2",
+    "wordcloud>=1.9.4",
+]

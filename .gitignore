@@ -1,0 +1,30 @@
+# uv build artifacts
+.uv/
+.uv_cache/
+.venv/
+venv/
+dist/
+build/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE / editor junk
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python packaging artifacts
+*.egg-info/
+.eggs/
+.coverage
+htmlcov/
