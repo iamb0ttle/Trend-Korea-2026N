@@ -43,7 +43,7 @@ class BrowserClient:
         self.driver.set_window_size(2560, 1440)
         self.logger.debug("Browser driver initialized.")
 
-    def login(self, screening: bool = False) -> None:
+    def login(self) -> None:
         """
         Login Bigkidns website with id & password with Selenium Browser.
         """
@@ -110,26 +110,7 @@ class BrowserClient:
         except Exception:
             self.logger.exception("Error occurred during credential input or login click.")
             return
-        
-        # 5. Screening (Optional)
-        if screening:
-            try:
-                self.logger.info("Starting login verification & screenshot capture.")
-                top_membership_btn = self.driver.find_element(By.CLASS_NAME, "topMembership")
-                top_membership_btn.click()
-                time.sleep(1)
-                
-                filename = f"success_login_{time.strftime('%Y%m%d_%H%M%S')}.png"
-                filepath = f"../screenshoots/{filename}"
-                
-                os.makedirs("../screenshoots", exist_ok=True)
 
-                self.driver.save_screenshot(filepath)
-                self.logger.info(f"Screenshot saved successfully: {filepath}")
-            except Exception:
-                self.logger.exception("Failed to capture login verification screenshot.")
-                return
-        
         self.logger.info("Login process completed successfully.")
 
     def close(self):
