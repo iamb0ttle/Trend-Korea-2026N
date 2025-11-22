@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
+from logger import AppLogger
 
 class BrowserClient:
     """
@@ -20,9 +21,12 @@ class BrowserClient:
         load_dotenv()
         self.user_id = os.getenv("BIGKINDS_ID")
         self.user_pw = os.getenv("BIGKINDS_PW")
+        self.logger = AppLogger("[BrowserClient]")
 
         if not self.user_id or not self.user_pw:
-            raise ValueError("BIGKINDS_ID or BIGKINDS_PW is not configurated in `.env`.")
+            msg = "BIGKINDS_ID or BIGKINDS_PW is not configurated in `.env`."
+            self.logger.critical(msg)
+            raise ValueError(msg)
 
         chrome_options = webdriver.ChromeOptions()
 
@@ -37,96 +41,97 @@ class BrowserClient:
         )
         
         self.driver.set_window_size(2560, 1440)
+        self.logger.debug("Browser driver initialized.")
 
     def login(self, screening: bool = False) -> None:
         """
         Login Bigkidns website with id & password with Selenium Browser.
-
-        Args:
-          screening (bool): If or not about screenshot capture while trying login process
-
-        Returns:
-          None
-
         """
         
-        print("[BrowserClient] Login trying...")
+        self.logger.info("Login process started.")
         
+        # 1. URL Access
         try:
-          print("[BrowserClient] Url access trying ...")
-          self.driver.get("https://www.bigkinds.or.kr/")
-          time.sleep(2)
-          print("[BrowserClient] Url access successed.")
-        except Exception as e:
-          print("[BrowserClient] Url access failed.", e)
-          return
+            self.logger.debug("Accessing URL: https://www.bigkinds.or.kr/")
+            self.driver.get("https://www.bigkinds.or.kr/")
+            time.sleep(2)
+            self.logger.info("URL access succeeded.")
+        except Exception:
+            self.logger.exception("URL access failed.")
+            return
         
+        # 2. Top Membership Button
         try:
-          print("[BrowserClient] Trying find element and click.")
-          top_membership_btn = self.driver.find_element(By.CLASS_NAME, "topMembership")
-          top_membership_btn.click()
-          time.sleep(1)
-          print("[BrowserClient] Find element and click successfully.")
-        except Exception as e:
-          print("[BrowserClient] Find element and click failed.", e)
-          return
-        
-        try:
-          print("[BrowserClient] Trying find element and click.")
-          login_modal_btn = self.driver.find_element(By.CSS_SELECTOR, 'a[data-target="#login-modal"]')
-          login_modal_btn.click()
-          time.sleep(1)
-          print("[BrowserClient] Find element and click successfully.")
-        except Exception as e:
-          print("[BrowserClient] Find element and click failed.", e)
-          return
-          
-        try:
-          print("[BrowserClient] Trying find element and send ID & password.")
-          id_input = self.driver.find_element(By.ID, "login-user-id")
-          pw_input = self.driver.find_element(By.ID, "login-user-password")
-        
-          id_input.send_keys(self.user_id)
-          time.sleep(1)
-          pw_input.send_keys(self.user_pw)
-          
-          login_btn = self.driver.find_element(By.ID, "login-btn")
-          login_btn.click()
-          
-          time.sleep(3)
-          
-          # check login modal closed  
-          modals = self.driver.find_elements(
-              By.CSS_SELECTOR, ".modal.modal-login.modal-click-close.in"
-          )
-
-          if modals:
-              print("[BrowserClient] Login modal still visible → login failed.")
-              return
-          else:
-              print("[BrowserClient] Login modal not found → login success.")
-              print("[BrowserClient] Find element and send ID & password successfully.")
-          
-          print("[BrowserClient] Find element and send ID & password successfully.")
-        except Exception as e:
-          print("[BrowserClient] Find element and send ID & password failed.", e)
-          return
-        
-        if screening == True:
-          try:
-            print("[BrowserClient] Try login status checking & saving screenshot")
+            self.logger.debug("Locating 'topMembership' button.")
             top_membership_btn = self.driver.find_element(By.CLASS_NAME, "topMembership")
             top_membership_btn.click()
             time.sleep(1)
-            
-            filename = f"success_login_{time.strftime('%Y%m%d_%H%M%S')}.png"
-            self.driver.save_screenshot(f"../screenshoots/{filename}")
-            print("[BrowserClient] Login status checking & saving screenshot processed successfully.")
-          except Exception as e:
-            print("[BrowserClient] Login status checking failed.", e)
+            self.logger.debug("Clicked 'topMembership' button.")
+        except Exception:
+            self.logger.exception("Failed to click 'topMembership' button.")
             return
         
-        print("[BrowserClient] Login completed successfully.")
+        # 3. Login Modal Button
+        try:
+            self.logger.debug("Locating login modal trigger.")
+            login_modal_btn = self.driver.find_element(By.CSS_SELECTOR, 'a[data-target="#login-modal"]')
+            login_modal_btn.click()
+            time.sleep(1)
+            self.logger.debug("Opened login modal.")
+        except Exception:
+            self.logger.exception("Failed to open login modal.")
+            return
+          
+        # 4. Input Credentials & Submit
+        try:
+            self.logger.debug("Inputting user credentials.")
+            id_input = self.driver.find_element(By.ID, "login-user-id")
+            pw_input = self.driver.find_element(By.ID, "login-user-password")
+        
+            id_input.send_keys(self.user_id)
+            time.sleep(1)
+            pw_input.send_keys(self.user_pw)
+            
+            login_btn = self.driver.find_element(By.ID, "login-btn")
+            login_btn.click()
+            
+            time.sleep(3)
+            
+            # check login modal closed  
+            modals = self.driver.find_elements(
+                By.CSS_SELECTOR, ".modal.modal-login.modal-click-close.in"
+            )
+
+            if modals:
+                self.logger.error("Login modal still visible. Login failed (Incorrect ID/PW or Captcha).")
+                return
+            else:
+                self.logger.info("Login modal closed. Login assumed successful.")
+        except Exception:
+            self.logger.exception("Error occurred during credential input or login click.")
+            return
+        
+        # 5. Screening (Optional)
+        if screening:
+            try:
+                self.logger.info("Starting login verification & screenshot capture.")
+                top_membership_btn = self.driver.find_element(By.CLASS_NAME, "topMembership")
+                top_membership_btn.click()
+                time.sleep(1)
+                
+                filename = f"success_login_{time.strftime('%Y%m%d_%H%M%S')}.png"
+                filepath = f"../screenshoots/{filename}"
+                
+                os.makedirs("../screenshoots", exist_ok=True)
+
+                self.driver.save_screenshot(filepath)
+                self.logger.info(f"Screenshot saved successfully: {filepath}")
+            except Exception:
+                self.logger.exception("Failed to capture login verification screenshot.")
+                return
+        
+        self.logger.info("Login process completed successfully.")
 
     def close(self):
         self.driver.quit()
+        self.logger.info("Browser driver closed.")
