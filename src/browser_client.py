@@ -119,7 +119,9 @@ class BrowserClient:
             top_membership_btn.click()
             time.sleep(1)
             
-            self.driver.save_screenshot("screenshoots/success_login.png")
+            filename = f"success_login_{time.strftime('%Y%m%d_%H%M%S')}.png"
+            self.driver.save_screenshot(f"../screenshoots/{filename}")
+            print("[BrowserClient] Login status checking & saving screenshot processed successfully.")
           except Exception as e:
             print("[BrowserClient] Login status checking failed.", e)
             return
