@@ -8,12 +8,14 @@ from keyword_monthly_agg import build_monthly_keyword_counts
 from logger import AppLogger
 from storage import save_news_rows_to_csv
 from analysis_tables import run_all_analysis
+from visualization import run_all_visualizations
 
 # File Path Constants
 TOTAL_NEWS_PATH = "../datasets/total_news_2025.csv"
 ECONOMY_NEWS_PATH = "../datasets/economy_news_2025.csv"
 KEYWORDS_PATH = "../datasets/news_keywords_2025.csv"
 MONTHLY_KEYWORDS_PATH = "../datasets/monthly_news_keywords_2025.csv"
+FONT_PATH = "../fonts/Pretendard-Regular.otf"
 
 logger = AppLogger("[Main]")
 
@@ -88,6 +90,20 @@ def run_analysis_table() -> None:
     logger.info("Analysis table generation completed successfully.")
   except Exception:
     logger.exception("Failed during analysis table generation.")
+    
+
+def run_visualizations() -> None:
+  """
+  Execute the visualization generation process.
+  """
+  logger.info("Starting visualization process...")
+
+  try:
+    # Assuming FONT_PATH is defined globally
+    run_all_visualizations(font_path=FONT_PATH)
+    logger.info("Visualization process completed successfully.")
+  except Exception:
+    logger.exception("Failed during visualization process.")
 
 def main():
   parser = argparse.ArgumentParser(description="News Crawler & Data Preprocessor")
@@ -96,7 +112,7 @@ def main():
   parser.add_argument(
     "--step", 
     type=str, 
-    choices=["crawl", "process", "analysis", "all"], 
+    choices=["crawl", "process", "analysis", "viz", "all"], 
     default="all",
     help="Select step to execute: crawl, process, or all"
   )
@@ -113,6 +129,9 @@ def main():
 
   if args.step in ["analysis", "all"]:
     run_analysis_table()
+    
+  if args.step in ["viz", "all"]:
+    run_visualizations()
     
 if __name__ == "__main__":
   main()

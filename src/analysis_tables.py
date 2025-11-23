@@ -96,6 +96,7 @@ def build_top10_monthly_timeseries(
     logger.debug("Filtering original dataframe for top keywords.")
     
     sub = df[df["keyword"].isin(top10_keywords)].copy()
+    sub = sub.groupby(['keyword', 'year', 'month'], as_index=False)['count'].sum()
     sub = sub.sort_values(["keyword", "year", "month"])
   except Exception:
     logger.exception("Error filtering/sorting timeseries data.")
