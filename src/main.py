@@ -76,8 +76,18 @@ def run_preprocessing():
   except Exception:
     logger.exception("An error occurred during the preprocessing step.")
     
-def run_analysis_table():
-  run_all_analysis(MONTHLY_KEYWORDS_PATH)
+def run_analysis_table() -> None:
+  """
+  Execute the analysis table generation process.
+  """
+  logger.info("Starting analysis table generation...")
+
+  try:
+    # Assuming MONTHLY_KEYWORDS_PATH is defined globally
+    run_all_analysis(MONTHLY_KEYWORDS_PATH)
+    logger.info("Analysis table generation completed successfully.")
+  except Exception:
+    logger.exception("Failed during analysis table generation.")
 
 def main():
   parser = argparse.ArgumentParser(description="News Crawler & Data Preprocessor")
