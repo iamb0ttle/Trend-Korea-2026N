@@ -1,6 +1,25 @@
 from datetime import date, timedelta, datetime
 import sys
 
+
+def load_stopwords(path: str = "../stopwords/ko_news_stopwords.txt") -> set[str]:
+  """
+  Loads stopwords from a specified text file.
+  
+  The file is expected to contain one stopword per line.
+
+  Args:
+    path (str): The file path to the text file containing stopwords. 
+                Defaults to "../stopwords/ko_news_stopwords.txt".
+    
+  Returns:
+    set[str]: A set of stopwords loaded from the file.
+  """
+  with open(path, "r", encoding="utf-8") as f:
+    # Read each line, strip whitespace, and add to set if not empty
+    return {line.strip() for line in f if line.strip()}
+      
+
 def generate_fridays(start_date: date, end_date: date) -> list[date]:
   """
   Generates a list of all Fridays between the given start and end dates.
@@ -38,6 +57,7 @@ def main():
     print("SELECT Util want to test!!")  
     print()
     print("1 - Friday Generator: Generates a list of all Fridays between the given start and end dates.")
+    print("2 - Stopwords Loader: Loads stopwords from a text file.")
     print("q - Quit Program")
     print()
     
@@ -86,7 +106,35 @@ def main():
 
       except ValueError:
         print("\n[!] Error: Invalid date format. Please use YYYYMMDD.")
-    
+        
+    # --- Feature 2: Stopwords Loader ---
+    elif input_util_num == 2:
+      print()
+      print("You selected Stopwords Loader!")
+      print()
+      print("===========[Stopwords Loader]===========")
+      print()
+
+      # Updated default path to .txt
+      default_path = "../stopwords/ko_news_stopwords.txt"
+      path_input = input(f"Input file path (Press Enter to use default: '{default_path}'): ").strip()
+      
+      target_path = path_input if path_input else default_path
+
+      try:
+        stopwords = load_stopwords(target_path)
+        print("-" * 40)
+        print(f"Successfully loaded {len(stopwords)} stopwords from '{target_path}'.")
+        # Sort for better readability in preview
+        preview_list = sorted(list(stopwords))
+        print(f"Preview (first 5): {preview_list[:5]}")
+        print("-" * 40)
+      
+      except FileNotFoundError:
+        print(f"\n[!] Error: File not found at '{target_path}'. Please check the path.")
+      except Exception as e:
+        print(f"\n[!] Unexpected error: {e}")
+        
     else:
       print("[!] Unknown selection. Please try again.")
 
