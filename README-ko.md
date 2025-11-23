@@ -154,9 +154,9 @@ run_all_visualizations()
 
 ## 라이선스 및 고지 사항
 
-**데이터 권리**: 본 프로젝트에서 분석된 메타데이터 및 기사 콘텐츠의 소유권은 \*\*BIGKINDS(한국언론진흥재단)\*\*에 있습니다.
-**사용 범위**: 이 프로젝트는 **교육 및 연구 목적**으로만 사용됩니다. 원 저작권자의 허가 없이 크롤링된 데이터를 상업적으로 사용하는 것은 엄격히 금지됩니다.
-**폰트**: 해당 프로젝트는 [Pretendard](https://github.com/orioncactus/pretendard) 폰트를 사용합니다, 라이센스는 [SIL Open Font License 1.1](/fonts/LICENSE.txt)에 명시되어있습니다.
+- **데이터 권리**: 본 프로젝트에서 분석된 메타데이터 및 기사 콘텐츠의 소유권은 \*\*BIGKINDS(한국언론진흥재단)\*\*에 있습니다.
+- **사용 범위**: 이 프로젝트는 **교육 및 연구 목적**으로만 사용됩니다. 원 저작권자의 허가 없이 크롤링된 데이터를 상업적으로 사용하는 것은 엄격히 금지됩니다.
+- **폰트**: 해당 프로젝트는 [Pretendard](https://github.com/orioncactus/pretendard) 폰트를 사용합니다, 라이센스는 [SIL Open Font License 1.1](/fonts/LICENSE.txt)에 명시되어있습니다.
 
 MIT License © 2025 Byeonghyeon Na
 
