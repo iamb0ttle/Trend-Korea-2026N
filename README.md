@@ -1,4 +1,4 @@
-[**English**](/README.md) | [한국어](/README.ko.md) 
+[**English**](/README.md) | [한국어](/README-ko.md) 
 
 # Trend Korea 2026N
 
@@ -155,5 +155,7 @@ Overall, the cloud reflects a year defined by political polarization, global eco
 
 **Data Rights**: The metadata and article content analyzed in this project belong to **BIGKINDS (Korea Press Foundation)**.
 **Usage**: This project is for **educational and research purposes only**. Commercial use of the crawled data is strictly prohibited without permission from the original copyright holders.
+**Fonts**:
+This project uses the [Pretendard](https://github.com/orioncactus/pretendard) font, licensed under the [SIL Open Font License 1.1](/fonts/LICENSE.txt).
 
 MIT License © 2025 Byeonghyeon Na
