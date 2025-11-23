@@ -2,7 +2,9 @@
 
 # Trend Korea 2026N
 
-![Python](https://img.shields.io/badge/python-3.13-3776AB?style=flat-square&logo=python&logoColor=white)
+![Trend Korea 2026N Banner](/images/tk2026n-banner.png)
+
+![Python](https://img.shields.io/badge/python-3.14-3776AB?style=flat-square&logo=python&logoColor=white)
 ![uv](https://img.shields.io/badge/uv-managed-purple?style=flat-square)
 ![Selenium](https://img.shields.io/badge/selenium-43B02A?style=flat-square&logo=selenium&logoColor=white)
 ![Status](https://img.shields.io/badge/status-active-success?style=flat-square)
