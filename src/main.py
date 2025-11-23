@@ -7,6 +7,7 @@ from data_processing import preprocess_news_dataset
 from keyword_monthly_agg import build_monthly_keyword_counts
 from logger import AppLogger
 from storage import save_news_rows_to_csv
+from analysis_tables import run_all_analysis
 
 # File Path Constants
 TOTAL_NEWS_PATH = "../datasets/total_news_2025.csv"
@@ -74,7 +75,9 @@ def run_preprocessing():
     logger.info(f"Preprocessing completed. Result saved to: {KEYWORDS_PATH}")
   except Exception:
     logger.exception("An error occurred during the preprocessing step.")
-
+    
+def run_analysis_table():
+  run_all_analysis(MONTHLY_KEYWORDS_PATH)
 
 def main():
   parser = argparse.ArgumentParser(description="News Crawler & Data Preprocessor")
@@ -83,7 +86,7 @@ def main():
   parser.add_argument(
     "--step", 
     type=str, 
-    choices=["crawl", "process", "all"], 
+    choices=["crawl", "process", "analysis", "all"], 
     default="all",
     help="Select step to execute: crawl, process, or all"
   )
@@ -98,5 +101,8 @@ def main():
   if args.step in ["process", "all"]:
     run_preprocessing()
 
+  if args.step in ["analysis", "all"]:
+    run_analysis_table()
+    
 if __name__ == "__main__":
   main()
