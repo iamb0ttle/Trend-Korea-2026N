@@ -1,11 +1,10 @@
 import argparse
-import sys
 from datetime import date
-from typing import List, Dict
 
 from browser_client import BrowserClient
 from crawler import collect_weekly_news_total, collect_weekly_news_economy
 from data_processing import preprocess_news_dataset
+from keyword_monthly_agg import build_monthly_keyword_counts
 from logger import AppLogger
 from storage import save_news_rows_to_csv
 
@@ -13,6 +12,7 @@ from storage import save_news_rows_to_csv
 TOTAL_NEWS_PATH = "../datasets/total_news_2025.csv"
 ECONOMY_NEWS_PATH = "../datasets/economy_news_2025.csv"
 KEYWORDS_PATH = "../datasets/news_keywords_2025.csv"
+MONTHLY_KEYWORDS_PATH = "../datasets/monthly_news_keywords_2025.csv"
 
 logger = AppLogger("[Main]")
 
@@ -70,6 +70,7 @@ def run_preprocessing():
   try:
     # The preprocess_news_dataset function handles file loading and error logging internally.
     preprocess_news_dataset(TOTAL_NEWS_PATH, ECONOMY_NEWS_PATH, KEYWORDS_PATH)
+    build_monthly_keyword_counts(KEYWORDS_PATH, MONTHLY_KEYWORDS_PATH)
     logger.info(f"Preprocessing completed. Result saved to: {KEYWORDS_PATH}")
   except Exception:
     logger.exception("An error occurred during the preprocessing step.")
